@@ -9,11 +9,11 @@ namespace argparse {
 class Argument
 {
 public:
-    Argument();
     Argument(const std::string& name);
     virtual ~Argument();
 
     Argument& add_name(const std::string& name);
+    const std::string& id() const;
     const std::vector<std::string>& names() const;
 
     Argument& set_metavar(const std::string& name);
@@ -37,6 +37,7 @@ public:
     static std::string flag_basename(const std::string& arg);
 
 protected:
+    std::string id_;
     std::vector<std::string> names_;
     bool is_flag_ = false;
     std::string metavar_;

@@ -14,8 +14,6 @@ namespace argparse {
 
 static const std::string FLAG_PREFIXES {"-+"};
 
-Argument::Argument() = default;
-
 Argument::Argument(const std::string& name)
 {
     add_name(name);
@@ -26,17 +24,19 @@ Argument::~Argument() = default;
 Argument& Argument::add_name(const std::string& name)
 {
     assert(name.size());
+    const std::string base = flag_basename(name);
 
-    // Auto set meta name
+    // Auto set meta name '--foo' => 'FOO'
     if (metavar_.empty())
     {
-        metavar_ = flag_basename(name);
+        metavar_ = base;
+        std::transform(metavar_.begin(), metavar_.end(), metavar_.begin(), ::toupper);
     }
 
     if (names_.size())
     {
         if (is_flag_ != flag_test(name))
-            throw std::runtime_error("invalid name for flag/arg");
+            throw std::runtime_error("error: invalid name for flag/arg");
     }
     else
     {
@@ -44,7 +44,21 @@ Argument& Argument::add_name(const std::string& name)
         if (not is_flag_) set_nargs(1);
     }
     names_.emplace_back(name);
+
+    // Auto select identifier (either first short flag or first long flag)
+    // '-f -F' -> 'f'
+    // '-f --file' -> 'file'
+    if (id_.size() < base.size())
+    {
+        id_ = (id_.size() < 2 ? base : id_);
+    }
+
     return *this;
+}
+
+const std::string& Argument::id() const
+{
+    return id_;
 }
 
 const std::vector<std::string>& Argument::names() const

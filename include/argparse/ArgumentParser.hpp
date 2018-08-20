@@ -1,32 +1,34 @@
 #ifndef argparse_ArgumentParser_hpp
 #define argparse_ArgumentParser_hpp
 
-#include "Argument.hpp"
+#include "argparse/Argument.hpp"
 
-#include <iostream>
-#include <string>
 #include <map>
+#include <memory>
+#include <string>
 #include <vector>
 
 namespace argparse {
 
+using Namespace = std::map<std::string, std::string>;
+
 class ArgumentParser
 {
 public:
-    std::vector<Argument> arguments_;
-
-public:
     ArgumentParser();
+    ArgumentParser(const std::string& progname);
+    ~ArgumentParser();
 
     Argument& add_argument(const std::string& name);
 
-    std::map<std::string, std::string> parse_args(int argc, char* argv[]) const;
+    Namespace parse_args(int argc, char* argv[]) const;
 
-    void usage(const std::string& exec) const;
+    void usage() const;
+    void help() const;
 
-    void help(const std::string& exec) const;
-
-    std::ostream& os = std::cout;
+private:
+    class impl;
+    std::unique_ptr<impl> pimpl;
 };
 
 } // namespace argparse
