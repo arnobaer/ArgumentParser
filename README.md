@@ -7,16 +7,16 @@ Influenced by Python's argparse module.
 
     ArgumentParser parser;
 
-    parser.addArgument("filename")
-        .setHelp("filename to open");
-    parser.addArgument("--max")
-        .setNArgs(1)
-        .setMetaVar("n")
-        .setHelp("max characters to read);
-    parser.addArgument("-v")
-        .setHelp("show verbose output");
+    parser.add_argument("filename")
+        .set_help("filename to open");
+    parser.add_argument("--max")
+        .set_nargs(1)
+        .set_metavar("n")
+        .set_help("max characters to read);
+    parser.add_argument("-v")
+        .set_help("show verbose output");
 
-    auto args = parser.parseArgs(argc, argv);
+    auto args = parser.parse_args(argc, argv);
 
     std::string filename = args.at("filename");
     bool verbose = args.at("v").size();

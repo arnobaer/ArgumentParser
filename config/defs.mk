@@ -1,5 +1,5 @@
 CC=clang
-CXX=clang++ -g -std=c++11
+CXX=clang++ -std=c++11 -g
 
 RM=rm -f
 MKDIR=mkdir -p

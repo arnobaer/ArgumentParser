@@ -4,6 +4,6 @@ Project=sample
 Sources=\
 	src/Argument.cpp\
 	src/ArgumentParser.cpp\
-	src/main.cpp
+	test/main.cpp
 
 include config/rules.mk
